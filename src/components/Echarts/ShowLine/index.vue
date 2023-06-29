@@ -10,11 +10,11 @@ import { onMounted, reactive, onBeforeUnmount, ref } from 'vue';
 const props = defineProps({
 	width: {
 		type: String,
-		default: '650px'
+		default: '630px'
 	},
 	height: {
 		type: String,
-		default: '240px'
+		default: '193px'
 	},
 })
 const chartShowLine = ref();
@@ -49,7 +49,7 @@ const areaList: any = ref([
 	{ text: "溱潼", radio: 30, instrument: 20, car: 20 },
 	{ text: "淤溪", radio: 20, instrument: 30, car: 10 },
 ]);
-const showNum = ref(4);// 默认展示四个
+const showNum = ref(7);// 默认展示个数
 const curNameList: any = ref([]); // 当前展示的地区名列表
 const radioList: any = ref([]); // 电台
 const instrumentList: any = ref([]); // 执法仪
@@ -83,18 +83,18 @@ const initChart = () => {
 			show: true,
 			data: ["电台", "执法仪", "警车"],
 			align: "left",
-			right: 20,
+			left: 'center',
 			top: 10,
 			itemWidth: 20,
-			itemHeight: 14,
-			itemGap: 20,
+			itemHeight: 5,
+			itemGap: 25,
 			textStyle: {
 				color: '#7ec7ff',
 				lineHeight: 15,
 			},
 		},
 		grid: {
-			top: '20%',
+			top: '25%',
 			left: "5%",
 			right: "2%",
 			bottom: "3%",
@@ -170,16 +170,20 @@ const initChart = () => {
 				type: "bar",
 				xAxisIndex: 0,
 				yAxisIndex: 0,
-				barWidth: "15%",
+				barWidth: "12%",
 				itemStyle: {
 					color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
 						{
 							offset: 0,
-							color: "rgba(110,181,237,1)",
+							color: "rgba(155,255,252,1)",
+						},
+						{
+							offset: .25,
+							color: "rgba(101,255,249,1)",
 						},
 						{
 							offset: 1,
-							color: "rgba(110,181,237,.3)",
+							color: "rgba(62,255,244,1)",
 						},
 					]),
 				},
@@ -191,16 +195,16 @@ const initChart = () => {
 				type: "bar",
 				xAxisIndex: 0,
 				yAxisIndex: 0,
-				barWidth: "15%",
+				barWidth: "12%",
 				itemStyle: {
 					color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
 						{
 							offset: 0,
-							color: "rgba(242,66,176,1)",
+							color: "rgba(63,164,255,1)",
 						},
 						{
 							offset: 1,
-							color: "rgba(242,66,176,.3)",
+							color: "rgba(96,245,255,1)",
 						},
 					]),
 				},
@@ -212,16 +216,16 @@ const initChart = () => {
 				type: "bar",
 				xAxisIndex: 0,
 				yAxisIndex: 0,
-				barWidth: "15%",
+				barWidth: "12%",
 				itemStyle: {
 					color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
 						{
 							offset: 0,
-							color: "rgba(29,137,221,1)",
+							color: "rgba(255,54,87,1)",
 						},
 						{
 							offset: 1,
-							color: "rgba(29,137,221,.3)",
+							color: "rgba(255,114,166,1)",
 						},
 					]),
 				},

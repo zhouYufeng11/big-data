@@ -1,14 +1,15 @@
 <template>
-	<div class="pannel">
+	<div class="pannel" :class="[type === 1 ? 'pannel1' : type === 2 ? 'pannel2' : 'pannel3']"
+		:style="{ height: height + 'px', width: width + 'px' }">
 		<TipTitle :title="props.title" />
-		<div class="pannel-wrap" :class="[border && 'hasBorder']" :style="{ height: height, width: width }">
+		<div class="pannel-wrap" :style="{ height: height - 70 + 'px', width: width + 'px' }">
 			<slot></slot>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { reactive, computed } from 'vue'
+import { ref, computed } from 'vue'
 import TipTitle from '@/components/TipTitle/index.vue';
 
 const props = defineProps({
@@ -17,18 +18,20 @@ const props = defineProps({
 		default: ''
 	},
 	width: {
-		type: [Number, String],
-		default: '100%'
+		type: [Number],
+		default: 630
 	},
 	height: {
-		type: [Number, String],
-		default: '245px'
+		type: [Number],
+		default: 288
 	},
-	border: {
-		type: Boolean,
-		default: true
+	type: {
+		type: Number,
+		default: 1
 	}
 })
+
+const curType = ref(props.type)
 
 let currentHeight = computed(() => {
 	if (typeof props.height === 'string')
@@ -50,17 +53,28 @@ let currentWidth = computed(() => {
 <style lang="scss" scoped>
 .pannel {
 	position: relative;
-	margin-bottom: 20px;
+	margin-bottom: 30px;
 	width: 100%;
+	height: 100%;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+
+	&.pannel1 {
+		background-image: url('../../assets/images/pannel1.png');
+	}
+
+	&.pannel2 {
+		background-image: url('../../assets/images/pannel2.png');
+	}
+
+	&.pannel3 {
+		background-image: url('../../assets/images/pannel3.png');
+	}
+
 
 	.pannel-wrap {
-		margin-top: 2px;
-		background: rgba(0, 0, 0, 0.1);
-
-		&.hasBorder {
-			border: 2px solid transparent;
-			border-image: linear-gradient(75deg, rgba(0, 28, 65, 0.8) 10%, #05233c 30%, rgba(26, 201, 255, .3) 70%, rgba(72, 108, 226, 0.2) 90%, transparent) 0 1 1 1;
-		}
+		background: linear-gradient(180deg, #011027 20%, rgba(5, 26, 60, 0.84) 50%, transparent);
 	}
 }
 </style>

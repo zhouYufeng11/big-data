@@ -1,22 +1,18 @@
 <template>
   <div class="top-title animate__animated animate__fadeInDown">
     <p class="title" @click="jumpTo">{{ title }}</p>
-    <p class="runtime">
-      <span class="text">平台运营时间</span>
-      <span class="num">{{ runDate }}</span>
-      <span class="unit">天</span>
+    <p class="weather">
+      <img src="../../assets/images/sun.png" alt="天气">
     </p>
-    <p class="userInfo">
-      <i class="iconfont icon-admin"></i>
-      <span>欢迎您，{{ username }}</span>
-      <i class="iconfont icon-arrow-down"></i>
+    <p class="time">
+      {{ timer }}
     </p>
   </div>
 </template>
 
 
 <script setup lang="ts">
-import { ref, computed } from "vue"
+import { ref, onMounted } from "vue"
 import { useRouter } from "vue-router"
 
 const props = defineProps({
@@ -34,72 +30,81 @@ const props = defineProps({
   },
 })
 
+const timer = ref('');
+const getNowTime = () => {
+  setInterval(() => {
+    //获取年月日
+    var time = new Date();
+    var year = time.getFullYear();
+    var month = time.getMonth() + 1;
+    var day = time.getDate();
+    //获取时分秒
+    var h = time.getHours();
+    var m = time.getMinutes();
+    var s = time.getSeconds();
+    //检查是否小于10
+    month = checkTime(month);
+    day = checkTime(day);
+    h = checkTime(h);
+    m = checkTime(m);
+    s = checkTime(s);
+    timer.value = `${year}-${month}-${day} ${h}:${m}:${s}`;
+  }, 1000);
+}
+
+const checkTime = (i: any) => { // 时间数字小于10，则在之前加个 '0' 补位。
+  var num;
+  i < 10 ? num = '0' + i : num = i;
+  return num;
+}
+
+onMounted(() => {
+  getNowTime();
+})
+
 const router = useRouter()
 
 const jumpTo = () => {
-  router.push("/show")
+  // router.push("/show")
 }
 </script>
 
 <style lang="scss" scoped>
 .top-title {
   width: 100%;
-  height: 105px;
+  height: 115px;
   position: relative;
-  background: url("../../assets/images/top.png") center / contain no-repeat;
+  background: url("../../assets/images/top-title.png") center / cover no-repeat;
 
   .title {
-    line-height: 70px;
-    font-size: 46px;
+    line-height: 110px;
     font-family: "YouSheBiaoTiHei";
     user-select: none;
     cursor: pointer;
+    font-size: 66px;
+    letter-spacing: 10px;
+    text-indent: 10px;
+    text-shadow: 0 0 8px #038fea, 0 0 12px #d7f2ff;
+    // background-image: linear-gradient(180deg, #fff 28%, #d7f2ff);
+    // -webkit-background-clip: text;
+    // -webkit-text-fill-color: transparent;
   }
 
-  .runtime {
+  .weather {
     position: absolute;
-    left: 40px;
-    top: 12px;
-    height: 40px;
-    line-height: 40px;
+    left: 30px;
+    top: 36px;
     user-select: none;
-
-    span {
-      vertical-align: middle;
-    }
-
-    .text,
-    .unit {
-      font-size: 16px;
-    }
-
-    .num {
-      font-size: 35px;
-      color: #1c91d4;
-      margin: 0 10px;
-      font-family: "YouSheBiaoTiHei";
-    }
   }
 
-  .userInfo {
+  .time {
     position: absolute;
-    right: 40px;
-    top: 12px;
-    height: 40px;
-    line-height: 40px;
+    right: 300px;
+    top: 25px;
     cursor: pointer;
     user-select: none;
+    font-size: 26px;
 
-    span {
-      font-size: 16px;
-      vertical-align: middle;
-    }
-
-    i {
-      vertical-align: middle;
-      margin: 0 10px;
-      font-size: 18px;
-    }
   }
 }
 </style>

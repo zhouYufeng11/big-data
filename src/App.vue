@@ -62,6 +62,6 @@ onMounted(() => {
   background-size: 100%;
   transform-origin: 0 0 0;
   position: relative;
-  // background: url('./assets/images/bg.jpg') center / cover no-repeat;
+  background: url('./assets/images/bg.png') center / cover no-repeat;
 }
 </style>

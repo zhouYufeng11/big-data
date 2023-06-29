@@ -1,10 +1,10 @@
 <template>
-	<div class="newsList">
-		<div class="news-tab">
+	<div class="newsList" :style="{ height: height + 'px' }">
+		<!-- <div class="news-tab">
 			<div class="tab-item" :class="[curIndex === i && 'active']" v-for="(v, k, i) in dataList" :key="'dataList_' + i"
 				@click="setTab(k, i)">
 				{{ v.text }}</div>
-		</div>
+		</div> -->
 		<div class="news-content">
 			<div class="news-wrap">
 				<div class="news-item" v-for="(s, n) in curList" :key="'curList_' + n">
@@ -20,12 +20,12 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 
-// const props = defineProps({
-// dataList: {
-// 	type: Object,
-// 	default: { news: {}, whole: {}, city: {} }
-// },
-// })
+const props = defineProps({
+	height: {
+		type: Number,
+		default: 218
+	},
+})
 
 
 // 近期高发
@@ -44,20 +44,6 @@ const dataList: any = ref({
 			{ text: '天目街道多个小区居民刷单被电信诈骗', type: '电信诈骗', time: '06-17' },
 		]
 	},
-	news2: {
-		text: '高发案件',
-		list: [
-			{ text: '三水街道326号发生多人斗殴事件', type: '未成年', time: '06-24' },
-			{ text: '罗塘街道239号发生一起人员失踪事件', type: '失踪人员', time: '06-20' },
-			{ text: '天目街道多个小区居民刷单被电信诈骗', type: '电信诈骗', time: '06-17' },
-			{ text: '三水街道326号发生多人斗殴事件', type: '未成年', time: '06-24' },
-			{ text: '罗塘街道239号发生一起人员失踪事件', type: '失踪人员', time: '06-20' },
-			{ text: '天目街道多个小区居民刷单被电信诈骗', type: '电信诈骗', time: '06-17' },
-			{ text: '三水街道326号发生多人斗殴事件', type: '未成年', time: '06-24' },
-			{ text: '罗塘街道239号发生一起人员失踪事件', type: '失踪人员', time: '06-20' },
-			{ text: '天目街道多个小区居民刷单被电信诈骗', type: '电信诈骗', time: '06-17' },
-		]
-	}
 });
 
 const curIndex = ref<number>(0);
@@ -75,9 +61,8 @@ onMounted(() => {
 <style lang="scss" scoped>
 .newsList {
 	position: relative;
-	height: 245px;
 	width: 100%;
-	padding: 20px;
+	padding: 0 30px;
 	overflow: hidden;
 
 	.news-tab {
@@ -103,8 +88,8 @@ onMounted(() => {
 	}
 
 	.news-content {
-		margin-top: 20px;
-		height: 180px;
+		margin-top: 5px;
+		height: 100%;
 		width: 100%;
 		overflow-y: auto;
 
