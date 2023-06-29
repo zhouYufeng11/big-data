@@ -1,5 +1,5 @@
 <template>
-	<div id="chartLine" class="chart-wrap" :style='{ height: height, width: width }' />
+	<div ref="chartLine" class="chart-wrap" :style='{ height: height, width: width }' />
 </template>
 
 <script setup lang='ts'>
@@ -10,13 +10,15 @@ import { onMounted, reactive, onBeforeUnmount, ref } from 'vue';
 const props = defineProps({
 	width: {
 		type: String,
-		default: '410px'
+		default: '630px'
 	},
 	height: {
 		type: String,
-		default: '220px'
+		default: '193px'
 	},
 })
+
+const chartLine = ref();
 
 const state: any = reactive({
 	chart: null,
@@ -35,13 +37,16 @@ onBeforeUnmount(() => {
 });
 
 let xLabel = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
-let goToSchool = ["2040", "2060", "2022", "2085", "2050", "2040", '2033', '2011', '2023', '2043', '2054', '2066'];
-let goOutSchool = ["2020", "2050", "2012", "2065", "2030", "2060", '2076', '2045', '2087', '2034', '2023', '2021'];
+let car1 = ["2040", "2060", "2022", "2085", "2050", "2040", '2033', '2011', '2023', '2043', '2054', '2066'];
+let car2 = ["2020", "2050", "2012", "2065", "2030", "2060", '2076', '2045', '2087', '2034', '2023', '2021'];
+let car3 = ["2020", "2050", "2012", "2065", "2030", "2060", '2076', '2045', '2087', '2034', '2023', '2021'];
+let car4 = ["2020", "2050", "2012", "2065", "2030", "2060", '2076', '2045', '2087', '2034', '2023', '2021'];
+let car5 = ["2020", "2050", "2012", "2065", "2030", "2060", '2076', '2045', '2087', '2034', '2023', '2021'];
 
 
 const initChart = () => {
 
-	const chartEle: HTMLElement = document.getElementById("chartLine") as HTMLElement;
+	const chartEle: HTMLElement = chartLine.value as HTMLElement;
 	const chart = init(chartEle);
 	const option: EChartsOption = {
 		animation: true,
@@ -74,8 +79,8 @@ const initChart = () => {
 		},
 		legend: {
 			show: true,
-			left: 10,
-			top: 0,
+			left: 'center',
+			top: 5,
 			itemWidth: 20,
 			itemHeight: 14,
 			itemGap: 20,
@@ -84,15 +89,18 @@ const initChart = () => {
 				lineHeight: 15,
 			},
 			data: [
-				{ name: '事件热度' },
-				{ name: '突发事件' }
+				{ name: '轿车' },
+				{ name: '面包车' },
+				{ name: '货车' },
+				{ name: '小货车' },
+				{ name: '大型客车' },
 			]
 		},
 		grid: {
 			top: '20%',
 			left: 70,
 			right: 20,
-			bottom: '18%',
+			bottom: 45,
 			// containLabel: true
 		},
 		xAxis: [{
@@ -138,7 +146,7 @@ const initChart = () => {
 			},
 		}],
 		series: [{
-			name: '事件热度',
+			name: '轿车',
 			type: 'line',
 			symbol: 'circle', // 默认是空心圆（中间是白色的），改成实心圆
 			showAllSymbol: true,
@@ -169,9 +177,9 @@ const initChart = () => {
 				shadowColor: 'rgba(25,163,223, 0.5)', //阴影颜色
 				shadowBlur: 20 //shadowBlur设图形阴影的模糊大小。配合shadowColor,shadowOffsetX/Y, 设置图形的阴影效果。
 			},
-			data: goToSchool
+			data: car1
 		}, {
-			name: '突发事件',
+			name: '面包车',
 			type: 'line',
 			symbol: 'circle', // 默认是空心圆（中间是白色的），改成实心圆
 			showAllSymbol: true,
@@ -201,7 +209,103 @@ const initChart = () => {
 				shadowColor: 'rgba(10,219,250, 0.5)', //阴影颜色
 				shadowBlur: 20 //shadowBlur设图形阴影的模糊大小。配合shadowColor,shadowOffsetX/Y, 设置图形的阴影效果。
 			},
-			data: goOutSchool
+			data: car2
+		}, {
+			name: '货车',
+			type: 'line',
+			symbol: 'circle', // 默认是空心圆（中间是白色的），改成实心圆
+			showAllSymbol: true,
+			symbolSize: 0,
+			smooth: true,
+			lineStyle: {
+				width: 2,
+				color: "rgba(10,219,250,1)", // 线条颜色
+				// borderColor: 'rgba(0,0,0,.4)',
+			},
+			itemStyle: {
+				color: "#27d1d5",
+				borderColor: "#27d1d5",
+				borderWidth: 1
+			},
+			areaStyle: { //区域填充样式
+				//线性渐变，前4个参数分别是x0,y0,x2,y2(范围0~1);相当于图形包围盒中的百分比。如果最后一个参数是‘true’，则该四个值是绝对像素位置。
+				color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+					offset: 0,
+					color: "rgba(10,219,250,.3)"
+				},
+				{
+					offset: 1,
+					color: "rgba(10,219,250, 0)"
+				}
+				], false),
+				shadowColor: 'rgba(10,219,250, 0.5)', //阴影颜色
+				shadowBlur: 20 //shadowBlur设图形阴影的模糊大小。配合shadowColor,shadowOffsetX/Y, 设置图形的阴影效果。
+			},
+			data: car3
+		}, {
+			name: '小货车',
+			type: 'line',
+			symbol: 'circle', // 默认是空心圆（中间是白色的），改成实心圆
+			showAllSymbol: true,
+			symbolSize: 0,
+			smooth: true,
+			lineStyle: {
+				width: 2,
+				color: "rgba(10,219,250,1)", // 线条颜色
+				// borderColor: 'rgba(0,0,0,.4)',
+			},
+			itemStyle: {
+				color: "#27d1d5",
+				borderColor: "#27d1d5",
+				borderWidth: 1
+			},
+			areaStyle: { //区域填充样式
+				//线性渐变，前4个参数分别是x0,y0,x2,y2(范围0~1);相当于图形包围盒中的百分比。如果最后一个参数是‘true’，则该四个值是绝对像素位置。
+				color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+					offset: 0,
+					color: "rgba(10,219,250,.3)"
+				},
+				{
+					offset: 1,
+					color: "rgba(10,219,250, 0)"
+				}
+				], false),
+				shadowColor: 'rgba(10,219,250, 0.5)', //阴影颜色
+				shadowBlur: 20 //shadowBlur设图形阴影的模糊大小。配合shadowColor,shadowOffsetX/Y, 设置图形的阴影效果。
+			},
+			data: car4
+		}, {
+			name: '大型客车',
+			type: 'line',
+			symbol: 'circle', // 默认是空心圆（中间是白色的），改成实心圆
+			showAllSymbol: true,
+			symbolSize: 0,
+			smooth: true,
+			lineStyle: {
+				width: 2,
+				color: "rgba(10,219,250,1)", // 线条颜色
+				// borderColor: 'rgba(0,0,0,.4)',
+			},
+			itemStyle: {
+				color: "#27d1d5",
+				borderColor: "#27d1d5",
+				borderWidth: 1
+			},
+			areaStyle: { //区域填充样式
+				//线性渐变，前4个参数分别是x0,y0,x2,y2(范围0~1);相当于图形包围盒中的百分比。如果最后一个参数是‘true’，则该四个值是绝对像素位置。
+				color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+					offset: 0,
+					color: "rgba(10,219,250,.3)"
+				},
+				{
+					offset: 1,
+					color: "rgba(10,219,250, 0)"
+				}
+				], false),
+				shadowColor: 'rgba(10,219,250, 0.5)', //阴影颜色
+				shadowBlur: 20 //shadowBlur设图形阴影的模糊大小。配合shadowColor,shadowOffsetX/Y, 设置图形的阴影效果。
+			},
+			data: car5
 		}]
 	};
 	option && chart.setOption(option);
