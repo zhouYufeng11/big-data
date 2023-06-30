@@ -20,14 +20,6 @@ const props = defineProps({
     type: String,
     default: "",
   },
-  runDate: {
-    type: Number,
-    default: "",
-  },
-  username: {
-    type: String,
-    default: "",
-  },
 })
 
 const timer = ref('');

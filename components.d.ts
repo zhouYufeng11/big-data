@@ -8,10 +8,13 @@ declare module '@vue/runtime-core' {
     ACarousel: typeof import('@arco-design/web-vue')['Carousel']
     ACarouselItem: typeof import('@arco-design/web-vue')['CarouselItem']
     Bar: typeof import('./src/components/Echarts/Bar/index.vue')['default']
+    BarLine: typeof import('./src/components/Echarts/BarLine/index.vue')['default']
     BarList: typeof import('./src/components/Echarts/BarList/index.vue')['default']
+    'BarList copy': typeof import('./src/components/Echarts/BarList copy/index.vue')['default']
     BarPie: typeof import('./src/components/Echarts/BarPie/index.vue')['default']
     BotLine: typeof import('./src/components/Echarts/BotLine/index.vue')['default']
     ConTable: typeof import('./src/components/ConTable/index.vue')['default']
+    'ConTable copy': typeof import('./src/components/ConTable copy/index.vue')['default']
     DialogPop: typeof import('./src/components/DialogPop/index.vue')['default']
     Distribution: typeof import('./src/components/Distribution/index.vue')['default']
     Hl: typeof import('./src/components/Echarts/Map/hl.vue')['default']
@@ -35,6 +38,7 @@ declare module '@vue/runtime-core' {
     ServicePie: typeof import('./src/components/Echarts/ServicePie/index.vue')['default']
     ShowLine: typeof import('./src/components/Echarts/ShowLine/index.vue')['default']
     ShowNews: typeof import('./src/components/ShowNews/index.vue')['default']
+    ShowTable: typeof import('./src/components/ShowTable/index.vue')['default']
     Slider: typeof import('./src/components/Slider/index.vue')['default']
     SubChooseTitle: typeof import('./src/components/SubChooseTitle/index.vue')['default']
     SubPannel: typeof import('./src/components/SubPannel/index.vue')['default']
@@ -44,6 +48,7 @@ declare module '@vue/runtime-core' {
     'TopSubTitle copy': typeof import('./src/components/TopSubTitle copy/index.vue')['default']
     TopTitle: typeof import('./src/components/TopTitle/index.vue')['default']
     VideoList: typeof import('./src/components/VideoList/index.vue')['default']
+    WarningTable: typeof import('./src/components/WarningTable/index.vue')['default']
   }
 }
 

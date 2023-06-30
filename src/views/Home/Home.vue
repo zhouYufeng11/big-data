@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <!-- 大标题 -->
-    <TopTitle :title="title" :runDate="runDate" :username="username" />
+    <TopTitle :title="title" />
     <div class="main">
       <div class="main-left animate__animated animate__fadeInLeft">
         <!-- 值班民警 -->
@@ -10,7 +10,7 @@
         </Pannel>
         <!-- 警情列表 -->
         <Pannel title="警情列表" :height="325" :type="2">
-          <!-- <Politics /> -->
+          <BarLine />
         </Pannel>
         <!-- 过车数量 -->
         <Pannel title="过车数量" :height="263" :type="3">
@@ -44,11 +44,11 @@
       <div class="main-right animate__animated animate__fadeInRight">
         <!-- 高发警情 -->
         <Pannel title="高发警情" :height="288" :type="1">
-          <News :height="218" />
+          <ShowTable :height="218" :head="head1" :list="table1" />
         </Pannel>
         <!-- 高发案件 -->
         <Pannel title="高发案件" :height="325" :type="2">
-          <News :height="255" />
+          <ShowTable :height="255" :head="head2" :list="table2" />
         </Pannel>
         <!-- 警力分布 -->
         <Pannel title="警力分布" :height="263" :type="3">
@@ -64,29 +64,51 @@ import { ref, onMounted, reactive, onBeforeUnmount } from 'vue';
 import TopTitle from '@/components/TopTitle/index.vue';
 import Pannel from '@/components/Pannel/index.vue';
 import Police from '@/components/Police/index.vue';
-import News from '@/components/News/index.vue';
+import ShowTable from '@/components/ShowTable/index.vue';
 import Line from '@/components/Echarts/Line/index.vue';
-import BarPie from '@/components/Echarts/BarPie/index.vue';
-import Map from '@/components/Echarts/Map/index.vue';
-import Pie from '@/components/Echarts/Pie/index.vue';
-import Intro from '@/components/Intro/index.vue';
-import Slider from '@/components/Slider/index.vue';
-import Bar from '@/components/Echarts/Bar/index.vue';
 import ShowLine from '@/components/Echarts/ShowLine/index.vue';
-
+import BarLine from '@/components/Echarts/BarLine/index.vue';
 
 const title = '情指行融合实战平台';
-const runDate = ref(109);
-const username = ref('admin');
 
-const pieList = ref([
-  { text: '兴化市', value: 1078 },
-  { text: '泰兴市', value: 1856 },
-  { text: '靖江市', value: 2654 },
-  { text: '海陵区', value: 1866 },
-  { text: '高港区', value: 1828 },
-  { text: '姜堰区', value: 1853 },
-])
+
+const head1: any = ref([
+	{ text: '类型', width: 80, },
+	{ text: '内容', width: 150, },
+	{ text: '时间', width: 80, },
+	{ text: '接警人', width: 60, },
+]);
+
+const table1: any = ref([
+	{ name: '陈程', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
+	{ name: '王可可', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 2, },
+	{ name: '陈国富', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 3, },
+	{ name: '李建军', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 3, },
+	{ name: '王菲', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 4, },
+	{ name: '李尚', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 4, },
+	{ name: '费婉', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
+	{ name: '赵飞羽', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
+	{ name: '孙建锋', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
+]);
+
+const head2: any = ref([
+	{ text: '类型', width: 80, },
+	{ text: '内容', width: 150, },
+	{ text: '时间', width: 80, },
+	{ text: '接警人', width: 60, },
+]);
+const table2: any = ref([
+	{ name: '陈程', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
+	{ name: '王可可', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 2, },
+	{ name: '陈国富', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 3, },
+	{ name: '李建军', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 3, },
+	{ name: '王菲', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 4, },
+	{ name: '李尚', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 4, },
+	{ name: '费婉', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
+	{ name: '赵飞羽', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
+	{ name: '孙建锋', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
+]);
+
 
 </script> 
 <style lang="scss">
