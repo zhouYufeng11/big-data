@@ -1,5 +1,6 @@
 node_modules
-/dist
+dist
+*.rar
 .history/
 
 # local env files
