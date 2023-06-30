@@ -74,29 +74,4 @@ const props = defineProps({
   }
 }
 
-@keyframes fadeCur {
-  0% {
-    opacity: 0;
-  }
-
-  50% {
-    opacity: 0;
-  }
-
-  60% {
-    opacity: .6;
-  }
-
-  70% {
-    opacity: .2;
-  }
-
-  80% {
-    opacity: .8;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
 </style>

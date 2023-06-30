@@ -73,40 +73,40 @@ const title = '情指行融合实战平台';
 
 
 const head1: any = ref([
-	{ text: '类型', width: 80, },
-	{ text: '内容', width: 150, },
-	{ text: '时间', width: 80, },
-	{ text: '接警人', width: 60, },
+  { text: '类型', width: 80, },
+  { text: '内容', width: 150, },
+  { text: '时间', width: 80, },
+  { text: '接警人', width: 60, },
 ]);
 
 const table1: any = ref([
-	{ name: '陈程', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
-	{ name: '王可可', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 2, },
-	{ name: '陈国富', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 3, },
-	{ name: '李建军', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 3, },
-	{ name: '王菲', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 4, },
-	{ name: '李尚', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 4, },
-	{ name: '费婉', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
-	{ name: '赵飞羽', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
-	{ name: '孙建锋', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
+  { name: '陈程', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
+  { name: '王可可', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 2, },
+  { name: '陈国富', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 3, },
+  { name: '李建军', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 3, },
+  { name: '王菲', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 4, },
+  { name: '李尚', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 4, },
+  { name: '费婉', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
+  { name: '赵飞羽', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
+  { name: '孙建锋', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
 ]);
 
 const head2: any = ref([
-	{ text: '类型', width: 80, },
-	{ text: '内容', width: 150, },
-	{ text: '时间', width: 80, },
-	{ text: '接警人', width: 60, },
+  { text: '类型', width: 80, },
+  { text: '内容', width: 150, },
+  { text: '时间', width: 80, },
+  { text: '接警人', width: 60, },
 ]);
 const table2: any = ref([
-	{ name: '陈程', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
-	{ name: '王可可', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 2, },
-	{ name: '陈国富', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 3, },
-	{ name: '李建军', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 3, },
-	{ name: '王菲', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 4, },
-	{ name: '李尚', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 4, },
-	{ name: '费婉', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
-	{ name: '赵飞羽', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
-	{ name: '孙建锋', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
+  { name: '陈程', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
+  { name: '王可可', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 2, },
+  { name: '陈国富', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 3, },
+  { name: '李建军', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 3, },
+  { name: '王菲', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 4, },
+  { name: '李尚', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 4, },
+  { name: '费婉', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
+  { name: '赵飞羽', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
+  { name: '孙建锋', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
 ]);
 
 
@@ -144,7 +144,7 @@ const table2: any = ref([
       .center-title {
         width: 100%;
         height: 110px;
-        background: url('../../assets//images/tip-title.png') center / contain no-repeat;
+        background: url('../../assets//images/tip-title.png') bottom center / contain no-repeat;
         line-height: 40px;
         letter-spacing: 6px;
         text-indent: 6px;
@@ -154,6 +154,27 @@ const table2: any = ref([
         font-family: "YouSheBiaoTiHei";
         user-select: none;
         text-shadow: 0 0 8px #038fea, 0 0 12px #d7f2ff;
+        position: relative;
+
+        &::before,
+        &::after {
+          content: '';
+          position: absolute;
+          top: 10px;
+          width: 99px;
+          height: 38px;
+          animation: fadeCur 3s ease-in-out infinite;
+        }
+
+        &::before {
+          left: 120px;
+          background: url('../../assets/images/left.png') center / contain no-repeat;
+        }
+
+        &::after {
+          right: 120px;
+          background: url('../../assets/images/right.png') center / contain no-repeat;
+        }
       }
 
       .center-bot {
