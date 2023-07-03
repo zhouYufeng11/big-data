@@ -28,12 +28,14 @@ const service = axios.create({
 	}
 })
 
+let loading = null;
+
 service.interceptors.request.use(
 	(config: AxiosRequestConfig) => {
-		Message.loading({
+		!loading && (loading = Message.loading({
 			content: `loading...`,
 			duration: 1000
-		})
+		}));
 		// Token
 		if (!(config as any).url.includes("/login")) {
 			// (config as any).headers["Authorization"] = `Bearer ${tokenStore}`

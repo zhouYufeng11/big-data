@@ -6,6 +6,9 @@
 import * as echarts from 'echarts';
 import { EChartsOption, init } from 'echarts';
 import { onMounted, reactive, onBeforeUnmount, ref } from 'vue';
+import { policeResource } from '@/api/index';
+import { dic_ResourceType } from '@/api/dic';
+import { Message } from '@arco-design/web-vue';
 
 const props = defineProps({
 	width: {
@@ -22,8 +25,118 @@ const state: any = reactive({
 	chart: null,
 });
 
-onMounted(() => {
-	initChart();
+const typeList: any = ref([]);
+const typeNameList: any = ref([]);
+const areaList: any = ref([]);
+const showNum = ref(7);// 默认展示个数
+const curNameList: any = ref([]); // 当前展示的地区名列表
+const radioList: any = ref([]); // 电台
+const instrumentList: any = ref([]); // 执法仪
+const carList: any = ref([]); // 警车
+
+const initList = () => {
+	areaList.value.forEach((s: any, i: number) => {
+		if (i < showNum.value) {
+			curNameList.value.push(s.text);
+			radioList.value.push(s.radio);
+			instrumentList.value.push(s.instrument);
+			carList.value.push(s.car);
+		}
+	});
+}
+
+const checkItem = (type: string): string => {
+	if (type === '1') {
+		return 'radio';
+	} else if (type === '2') {
+		return 'instrument';
+	} else if (type === '3') {
+		return 'car';
+	} else {
+		return 'noData'
+	}
+}
+
+const fetchDicData = async () => {
+	return await dic_ResourceType({}).then((res: any) => {
+		if (res.code = 200) {
+			typeList.value = res.data.map((s: any) => {
+				typeNameList.value.push(s.dictLabel)
+				return { key: s.dictValue, value: s.dictLabel }
+			});
+		} else {
+			Message.error(res.msg)
+		}
+	}).catch(err => {
+		console.log(err)
+	})
+}
+
+// // 组装 series item
+// let seriesItem = (nameList: string[], rows: any) => {
+// 	let colorList = [
+// 		[
+// 			{ offset: 0, color: "rgba(155,255,252,1)" },
+// 			{ offset: .25, color: "rgba(101,255,249,1)" },
+// 			{ offset: 1, color: "rgba(62,255,244,1)" },
+// 		],
+// 		[
+// 			{ offset: 0, color: "rgba(63,164,255,1)" },
+// 			{ offset: 1, color: "rgba(96,245,255,1)" },
+// 		],
+// 		[
+// 			{ offset: 0, color: "rgba(255,54,87,1)", },
+// 			{ offset: 1, color: "rgba(255,114,166,1)" },
+// 		]
+// 	]
+// 	let seriesList: any = nameList.map((s: any, i: number) => {
+// 		let curOne: any = {
+// 			name: s,
+// 			z: 2,
+// 			type: "bar",
+// 			xAxisIndex: 0,
+// 			yAxisIndex: 0,
+// 			barWidth: "12%",
+// 			data: rows[s].map((k: any) => k.policeCount),
+// 		}
+// 		if (i < 3) {
+// 			curOne.itemStyle.color = new echarts.graphic.LinearGradient(0, 0, 0, 1, colorList[i]);
+// 		}
+// 		return
+// 	});
+// 	return seriesList;
+// }
+
+
+const fetchData = async () => {
+	return await policeResource({}).then((res: any) => {
+		if (res.code === 200) {
+			const list: any = [];
+			const nameList = Object.entries(res.rows).map(s => s[0]);
+			nameList.forEach((k: any, j: number) => {
+				if (!list[j]) {
+					list.push({ text: k, radio: 0, instrument: 0, car: 0 });
+				}
+				const item = res.rows[k];
+				item.forEach((s: any) => {
+					list[j][checkItem(s.policeResourceType)] = s.policeCount
+				});
+			});
+			areaList.value = list;
+			initList();
+			showSetInterval();
+		} else {
+			Message.error(res.msg)
+		}
+	}).catch(err => {
+		console.log(err)
+	})
+}
+
+
+onMounted(async () => {
+	await fetchDicData();
+	fetchData();
 });
 
 onBeforeUnmount(() => {
@@ -34,35 +147,6 @@ onBeforeUnmount(() => {
 	state.chart = null
 });
 
-const areaList: any = ref([
-	{ text: "三水", radio: 20, instrument: 30, car: 10 },
-	{ text: "罗塘", radio: 30, instrument: 20, car: 20 },
-	{ text: "天目山", radio: 20, instrument: 30, car: 10 },
-	{ text: "梁徐", radio: 30, instrument: 20, car: 20 },
-	{ text: "蒋垛", radio: 20, instrument: 30, car: 10 },
-	{ text: "娄庄", radio: 30, instrument: 20, car: 20 },
-	{ text: "白米", radio: 20, instrument: 30, car: 10 },
-	{ text: "俞垛", radio: 30, instrument: 20, car: 20 },
-	{ text: "大伦", radio: 20, instrument: 30, car: 10 },
-	{ text: "顾高", radio: 30, instrument: 20, car: 20 },
-	{ text: "张甸", radio: 20, instrument: 30, car: 10 },
-	{ text: "溱潼", radio: 30, instrument: 20, car: 20 },
-	{ text: "淤溪", radio: 20, instrument: 30, car: 10 },
-]);
-const showNum = ref(7);// 默认展示个数
-const curNameList: any = ref([]); // 当前展示的地区名列表
-const radioList: any = ref([]); // 电台
-const instrumentList: any = ref([]); // 执法仪
-const carList: any = ref([]); // 警车
-
-areaList.value.forEach((s: any, i: number) => {
-	if (i < showNum.value) {
-		curNameList.value.push(s.text);
-		radioList.value.push(s.radio);
-		instrumentList.value.push(s.instrument);
-		carList.value.push(s.car);
-	}
-});
 
 
 const initChart = () => {
@@ -71,7 +155,7 @@ const initChart = () => {
 	const option: EChartsOption = {
 		animation: true,
 		animationEasing: 'linear',
-		animationDuration: 1000,
+		animationDuration: 500,
 		tooltip: {
 			trigger: "axis",
 			axisPointer: {
@@ -81,7 +165,7 @@ const initChart = () => {
 		},
 		legend: {
 			show: true,
-			data: ["电台", "执法仪", "警车"],
+			data: typeNameList.value,
 			align: "left",
 			left: 'center',
 			top: 10,
@@ -166,7 +250,8 @@ const initChart = () => {
 		],
 		series: [
 			{
-				name: "电台",
+				name: typeNameList.value[0],
+				// name: "电台",
 				type: "bar",
 				xAxisIndex: 0,
 				yAxisIndex: 0,
@@ -191,7 +276,8 @@ const initChart = () => {
 				z: 2,
 			},
 			{
-				name: "执法仪",
+				name: typeNameList.value[1],
+				// name: "执法仪",
 				type: "bar",
 				xAxisIndex: 0,
 				yAxisIndex: 0,
@@ -212,7 +298,8 @@ const initChart = () => {
 				z: 2,
 			},
 			{
-				name: "警车",
+				name: typeNameList.value[2],
+				// name: "警车",
 				type: "bar",
 				xAxisIndex: 0,
 				yAxisIndex: 0,
@@ -255,7 +342,7 @@ const initChart = () => {
 }
 
 // 循环添加
-setInterval(() => {
+const showSetInterval = () => setInterval(() => {
 	const curNum = showNum.value + 1 > areaList.value.length ? 0 : showNum.value++;
 	// 重置
 	if (curNum === 0) showNum.value = 1;
@@ -270,7 +357,7 @@ setInterval(() => {
 	carList.value.shift() // 警车
 	carList.value.push(curOne.car)
 	initChart();
-}, 2000);
+}, 1500);
 
 
 </script>

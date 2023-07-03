@@ -20,7 +20,7 @@
 				<tbody>
 					<tr v-for="(v, k) in list" :key="'list_' + height + k">
 						<td>
-							<p class="type">{{ showType(v.type) }}</p>
+							<p class="type">{{ v.typeName }}</p>
 						</td>
 						<td>{{ v.content }}</td>
 						<td>{{ v.time }}</td>
@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 
 const props = defineProps({
 	head: {
@@ -41,7 +41,7 @@ const props = defineProps({
 		default: []
 	},
 	list: {
-		type: Array<{ name: string, content: string, time: string, type: number }>,
+		type: Array<{ name: string, content: string, time: string, typeName: number }>,
 		default: []
 	},
 	height: {
@@ -52,21 +52,12 @@ const props = defineProps({
 
 const tableHeight = props.height - 20 + 'px';
 
-const showType: any = computed(() => {
-	return (type: number) => {
-		if (type === 1) {
-			return '未成年'
-		} else if (type === 2) {
-			return '失踪人口'
-		} else if (type === 3) {
-			return '电信诈骗'
-		} else if (type === 4) {
-			return '入室抢劫'
-		} else {
-			return '暂时未知'
-		}
-	}
-});
+const sliderSecond: any = ref('20s');
+
+watch(() => props.list, (newValue: any) => {
+	sliderSecond.value = `${Math.floor(newValue.length * 0.9)}s`
+})
+
 
 </script>
 
@@ -83,6 +74,7 @@ const showType: any = computed(() => {
 
 		table {
 			animation: scrollBot 20s linear infinite;
+			animation-duration: v-bind(sliderSecond);
 
 			&:hover {
 				animation-play-state: paused;

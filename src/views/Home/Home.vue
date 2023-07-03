@@ -20,26 +20,6 @@
       <div class="main-center">
         <div class="center-title animate__animated animate__fadeInDown animate__delay-1s">实时地图查看</div>
         <div class="center-bot animate__animated animate__fadeInUp"></div>
-        <!-- <div class="m-top">
-          <div class="map">
-            <Map :dataList="pieList" />
-          </div>
-          <div class="map-right">
-            <div class="pie-pannel">
-              <div class="pie-item" v-for="(v, i) in pieList" :key="'pieList_' + i">
-                <Pie :curText="v.text" :curValue="v.value" :curKey="i" />
-              </div>
-            </div>
-            <SubPannel title="警务指令">
-              <Intro />
-            </SubPannel>
-          </div>
-        </div>
-        <div class="m-bot">
-          <Pannel title="热点聚焦" :height="250" :type="1">
-            <Slider />
-          </Pannel>
-        </div> -->
       </div>
       <div class="main-right animate__animated animate__fadeInRight">
         <!-- 高发警情 -->
@@ -68,9 +48,10 @@ import ShowTable from '@/components/ShowTable/index.vue';
 import Line from '@/components/Echarts/Line/index.vue';
 import ShowLine from '@/components/Echarts/ShowLine/index.vue';
 import BarLine from '@/components/Echarts/BarLine/index.vue';
-
+import { highIncidenceInstanceList, highIncidenceCaseList } from '@/api/index';
+import { dic_HighCategory } from '@/api/dic';
+import { Message } from '@arco-design/web-vue';
 const title = '情指行融合实战平台';
-
 
 const head1: any = ref([
   { text: '类型', width: 80, },
@@ -79,17 +60,7 @@ const head1: any = ref([
   { text: '接警人', width: 60, },
 ]);
 
-const table1: any = ref([
-  { name: '陈程', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
-  { name: '王可可', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 2, },
-  { name: '陈国富', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 3, },
-  { name: '李建军', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 3, },
-  { name: '王菲', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 4, },
-  { name: '李尚', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 4, },
-  { name: '费婉', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
-  { name: '赵飞羽', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
-  { name: '孙建锋', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
-]);
+const table1: any = ref([]);
 
 const head2: any = ref([
   { text: '类型', width: 80, },
@@ -97,17 +68,61 @@ const head2: any = ref([
   { text: '时间', width: 80, },
   { text: '接警人', width: 60, },
 ]);
-const table2: any = ref([
-  { name: '陈程', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
-  { name: '王可可', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 2, },
-  { name: '陈国富', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 3, },
-  { name: '李建军', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 3, },
-  { name: '王菲', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 4, },
-  { name: '李尚', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 4, },
-  { name: '费婉', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
-  { name: '赵飞羽', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
-  { name: '孙建锋', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
-]);
+const table2: any = ref([]);
+
+const typeList: any = ref([]);
+const checkType = (type: string): string => {
+  return typeList.value.find((s: any) => s.key === type)?.value || '未知';
+}
+
+// 字典
+const fetchDicData = async () => {
+  return await dic_HighCategory({}).then((res: any) => {
+    if (res.code = 200) {
+      typeList.value = res.data.map((s: any) => {
+        return { key: s.dictValue, value: s.dictLabel }
+      });
+    } else {
+      Message.error(res.msg)
+    }
+  }).catch(err => {
+    console.log(err)
+  })
+}
+const fetchData = async () => {
+  return await highIncidenceInstanceList({}).then((res: any) => {
+    if (res.code === 200) {
+      table1.value = res.rows.map((s: any) => {
+        return { name: s.caseReceiverName, content: s.caseContent, time: s.caseArlarmTime, typeName: checkType(s.highIncidenceCode) }
+      })
+    } else {
+      Message.error(res.msg)
+    }
+  }).catch(err => {
+    console.log(err)
+  })
+}
+
+const fetchData2 = async () => {
+  return await highIncidenceCaseList({}).then((res: any) => {
+    if (res.code === 200) {
+      table2.value = res.rows.map((s: any) => {
+        return { name: s.caseReceiverName, content: s.caseContent, time: s.caseArlarmTime, typeName: checkType(s.caseCategoryCode) }
+      })
+    } else {
+      Message.error(res.msg)
+    }
+  }).catch(err => {
+    console.log(err)
+  })
+}
+
+onMounted(async () => {
+  await fetchDicData();
+  fetchData();
+  fetchData2();
+})
+
 
 
 </script> 

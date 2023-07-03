@@ -20,7 +20,7 @@
 				<tbody>
 					<tr v-for="(v, k) in list" :key="'list_' + k">
 						<td>
-							<p class="type">{{ showType(v.type) }}</p>
+							<p class="type">{{ v.typeName }}</p>
 						</td>
 						<td>{{ v.content }}</td>
 						<td>{{ v.time }}</td>
@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 
 const props = defineProps({
 	head: {
@@ -41,26 +41,16 @@ const props = defineProps({
 		default: []
 	},
 	list: {
-		type: Array<{ name: string, content: string, time: string, type: number }>,
+		type: Array<{ name: string, content: string, time: string, typeName: number }>,
 		default: []
 	},
 })
 
-const showType: any = computed(() => {
-	return (type: number) => {
-		if (type === 1) {
-			return '入室盗窃'
-		} else if (type === 2) {
-			return '网络诈骗'
-		} else if (type === 3) {
-			return '经济纠纷'
-		} else if (type === 4) {
-			return '家庭暴力'
-		} else {
-			return '暂时未知'
-		}
-	}
-});
+const sliderSecond: any = ref('20s');
+
+watch(() => props.list, (newValue: any) => {
+	sliderSecond.value = `${Math.floor(newValue.length * 1)}s`
+})
 
 </script>
 
@@ -78,6 +68,7 @@ const showType: any = computed(() => {
 
 		table {
 			animation: scrollBot 20s linear infinite;
+			animation-duration: v-bind(sliderSecond);
 
 			&:hover {
 				animation-play-state: paused;
@@ -129,7 +120,7 @@ const showType: any = computed(() => {
 				margin: 0 auto;
 				height: 22px;
 				line-height: 22px;
-				background: url('../../assets/images/type.png') center / contain no-repeat;
+				background: url('../../assets/images/type.png') center / 80% no-repeat;
 			}
 
 			&.danger {
@@ -154,7 +145,7 @@ const showType: any = computed(() => {
 	}
 
 	to {
-		transform: translateY(-80%)
+		transform: translateY(-100%)
 	}
 }
 </style>

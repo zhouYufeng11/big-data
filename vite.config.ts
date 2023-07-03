@@ -25,12 +25,12 @@ export default defineConfig(({ mode }: UserConfig): UserConfig => {
       hmr: true, //开启热更新
       cors: true, //默认启用并允许任何源
       proxy: {
-        '/api': {
-          // target: loadEnv(mode, process.cwd().VITE_APP_API) || 'http://localhost:3000/',
-          target: 'http://218.205.43.119:8089/sys/',
-          changeOrigin: true,
-          rewrite: (pathStr) => pathStr.replace(/^\/api/, '')
-        }
+        // '/api': {
+        //   // target: loadEnv(mode, process.cwd().VITE_APP_API) || 'http://localhost:3000/',
+        //   target: 'http://192.168.1.7:8080/',
+        //   changeOrigin: true,
+        //   rewrite: (pathStr) => pathStr.replace(/^\/api/, '')
+        // }
       },
     },
     resolve: {

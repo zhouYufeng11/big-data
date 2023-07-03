@@ -1,7 +1,7 @@
 <template>
 	<div class="bar-list">
 		<div class="bar-chart">
-			<div id="chartBarList" class="chart-wrap" :style="{ height: height, width: width }" />
+			<div ref="chartBarList" class="chart-wrap" :style="{ height: height, width: width }" />
 		</div>
 		<!-- 表格 -->
 		<div class="bar-table-box">
@@ -15,6 +15,9 @@ import * as echarts from 'echarts';
 import { EChartsOption, init } from 'echarts';
 import { onMounted, reactive, onBeforeUnmount, ref } from 'vue';
 import WarningTable from '@/components/WarningTable/index.vue';
+import { caseList, caseStatistics } from '@/api/index';
+import { dic_Category } from '@/api/dic';
+import { Message } from '@arco-design/web-vue';
 
 const props = defineProps({
 	width: {
@@ -27,38 +30,73 @@ const props = defineProps({
 	}
 });
 
+const chartBarList = ref();
+
 const state: any = reactive({
 	chart: null,
 });
 
+// 数据
+const dataAll: any = ref([]);
 const head: any = [
-	{ text: '类型', width: 100, },
-	{ text: '内容', width: 150, },
+	{ text: '类型', width: 60, },
+	{ text: '内容', width: 180, },
 	{ text: '时间', width: 80, },
 	{ text: '接警人', width: 60, },
 ];
-const table: any = [
-	{ name: '陈程', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
-	{ name: '王可可', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 2, },
-	{ name: '陈国富', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 3, },
-	{ name: '李建军', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 3, },
-	{ name: '王菲', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 4, },
-	{ name: '李尚', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 4, },
-	{ name: '费婉', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
-	{ name: '赵飞羽', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
-	{ name: '孙建锋', content: '三水小区入室盗窃案涉案金额20w', time: '2023/05/06', type: 1, },
-];
-
-// 数据
-let dataAll: any = [
-	{ name: "07.05", value: 63 },
-	{ name: "07.04", value: 46 },
-	{ name: "07.03", value: 42 },
-	{ name: "07.02", value: 32 },
-	{ name: "07.01", value: 58 },
-	{ name: "06.30", value: 70 },
-	{ name: "06.29", value: 82 },
-];
+const table: any = ref([]);
+const typeList: any = ref([]);
+const checkType = (type: string): string => {
+	return typeList.value.find((s: any) => s.key === type)?.value || '未知';
+}
+// 统计
+const fetchStatData = async () => {
+	return await caseStatistics({}).then((res: any) => {
+		if (res.code === 200) {
+			dataAll.value = res.rows.map((s: any) => {
+				return { name: s.key.slice(5).replace('-', '/'), value: s.value }
+			});
+		} else {
+			Message.error(res.msg)
+		}
+	}).catch(err => {
+		console.log(err)
+	})
+}
+// 字典
+const fetchDicData = async () => {
+	return await dic_Category({}).then((res: any) => {
+		if (res.code = 200) {
+			typeList.value = res.data.map((s: any) => {
+				return { key: s.dictValue, value: s.dictLabel }
+			});
+		} else {
+			Message.error(res.msg)
+		}
+	}).catch(err => {
+		console.log(err)
+	})
+}
+// 列表
+const fetchData = async () => {
+	return await caseList({}).then((res: any) => {
+		if (res.code === 200) {
+			table.value = res.rows.map((s: any) => {
+				return {
+					name: s.caseReceiverName,
+					content: s.caseContent,
+					time: s.caseArlarmTime,
+					typeName: checkType(s.caseCategoryCode),
+				}
+			});
+			initChart();
+		} else {
+			Message.error(res.msg)
+		}
+	}).catch(err => {
+		console.log(err)
+	})
+}
 
 
 let getArrByKey = (data: any, k: any) => {
@@ -76,8 +114,11 @@ let getArrByKey = (data: any, k: any) => {
 // 	return b.value - a.value;
 // });
 
-onMounted(() => {
-	initChart();
+onMounted(async () => {
+	fetchStatData();
+	await fetchDicData();
+	await fetchData();
+	// initChart();
 });
 
 onBeforeUnmount(() => {
@@ -89,7 +130,7 @@ onBeforeUnmount(() => {
 });
 
 const initChart = () => {
-	const chartEle: HTMLElement = document.getElementById('chartBarList') as HTMLElement;
+	const chartEle: HTMLElement = chartBarList.value as HTMLElement;
 	const chart = init(chartEle);
 	const option: EChartsOption = {
 		animation: true,
@@ -98,7 +139,7 @@ const initChart = () => {
 		grid: {
 			top: 15,
 			bottom: -20,
-			right: 10,
+			right: -10,
 			left: 10,
 			containLabel: true,
 		},
@@ -108,7 +149,7 @@ const initChart = () => {
 		yAxis: [
 			{
 				show: false,
-				data: getArrByKey(dataAll, "name"),
+				data: getArrByKey(dataAll.value, "name"),
 				axisLine: {
 					show: false,
 				},
@@ -126,7 +167,7 @@ const initChart = () => {
 				triggerEvent: true,
 				show: true,
 				inverse: true,
-				data: getArrByKey(dataAll, "value"),
+				data: getArrByKey(dataAll.value, "value"),
 				axisLine: {
 					show: false,
 				},
@@ -139,8 +180,8 @@ const initChart = () => {
 				axisLabel: {
 					interval: 0,
 					color: "#fff",
-					align: "left",
-					margin: -15,
+					align: "right",
+					margin: 0,
 					verticalAlign: "bottom",
 					lineHeight: 25,
 					fontSize: 12,
@@ -157,7 +198,7 @@ const initChart = () => {
 					borderRadius: 4,
 				},
 				yAxisIndex: 1,
-				data: dataAll,
+				data: dataAll.value,
 				barWidth: 8,
 				// barGap: 20,
 				itemStyle: {
@@ -208,7 +249,7 @@ const initChart = () => {
 				symbol: 'circle',
 				symbolOffset: [0, -0.2],
 				yAxisIndex: 1,
-				data: getArrByKey(dataAll, "value"),
+				data: getArrByKey(dataAll.value, "value"),
 				animationDelay: 500,
 				animationDuration: 500
 			},
