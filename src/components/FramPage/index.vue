@@ -1,5 +1,5 @@
 <template>
-	<div v-if="showPage" class="dialog-pop animate__animated animate__fadeInUp">
+	<div v-if="showPage" class="dialog-pop animate__animated animate__zoomIn">
 		<div class="dialog-wrap">
 			<div class="dialog-title">{{ pageName }}</div>
 			<div class="close" @click="closeDialog">
