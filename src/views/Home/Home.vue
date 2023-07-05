@@ -76,7 +76,7 @@ const checkType = (type: string): string => {
   return typeList.value.find((s: any) => s.key === type)?.value || '未知';
 }
 const checkType2 = (type: string): string => {
-  return typeList.value.find((s: any) => s.key === type)?.value || '未知';
+  return typeList2.value.find((s: any) => s.key === type)?.value || '未知';
 }
 // 高发警情 - 字典
 const fetchDicData = async () => {
@@ -96,7 +96,7 @@ const fetchDicData = async () => {
 const fetchDicData2 = async () => {
   return await dic_HighCaseList({}).then((res: any) => {
     if (res.code = 200) {
-      typeList.value = res.data.map((s: any) => {
+      typeList2.value = res.data.map((s: any) => {
         return { key: s.dictValue, value: s.dictLabel }
       });
     } else {
