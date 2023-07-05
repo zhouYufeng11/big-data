@@ -10,8 +10,6 @@ declare module '@vue/runtime-core' {
     BarList: typeof import('./src/components/Echarts/BarList/index.vue')['default']
     BarPie: typeof import('./src/components/Echarts/BarPie/index.vue')['default']
     BotLine: typeof import('./src/components/Echarts/BotLine/index.vue')['default']
-    DialogPop: typeof import('./src/components/DialogPop/index.vue')['default']
-    'DialogPop copy': typeof import('./src/components/DialogPop copy/index.vue')['default']
     Distribution: typeof import('./src/components/Distribution/index.vue')['default']
     FramPage: typeof import('./src/components/FramPage/index.vue')['default']
     Hl: typeof import('./src/components/Echarts/Map/hl.vue')['default']
