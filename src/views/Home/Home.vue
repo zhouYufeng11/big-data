@@ -49,7 +49,7 @@ import Line from '@/components/Echarts/Line/index.vue';
 import ShowLine from '@/components/Echarts/ShowLine/index.vue';
 import BarLine from '@/components/Echarts/BarLine/index.vue';
 import { highIncidenceInstanceList, highIncidenceCaseList } from '@/api/index';
-import { dic_HighCategory } from '@/api/dic';
+import { dic_HighCategory, dic_HighCaseList } from '@/api/dic';
 import { Message } from '@arco-design/web-vue';
 const title = '情指行融合实战平台';
 
@@ -71,11 +71,14 @@ const head2: any = ref([
 const table2: any = ref([]);
 
 const typeList: any = ref([]);
+const typeList2: any = ref([]);
 const checkType = (type: string): string => {
   return typeList.value.find((s: any) => s.key === type)?.value || '未知';
 }
-
-// 字典
+const checkType2 = (type: string): string => {
+  return typeList.value.find((s: any) => s.key === type)?.value || '未知';
+}
+// 高发警情 - 字典
 const fetchDicData = async () => {
   return await dic_HighCategory({}).then((res: any) => {
     if (res.code = 200) {
@@ -89,6 +92,22 @@ const fetchDicData = async () => {
     console.log(err)
   })
 }
+// 高发案情 - 字典
+const fetchDicData2 = async () => {
+  return await dic_HighCaseList({}).then((res: any) => {
+    if (res.code = 200) {
+      typeList.value = res.data.map((s: any) => {
+        return { key: s.dictValue, value: s.dictLabel }
+      });
+    } else {
+      Message.error(res.msg)
+    }
+  }).catch(err => {
+    console.log(err)
+  })
+}
+
+// 高发警情
 const fetchData = async () => {
   return await highIncidenceInstanceList({}).then((res: any) => {
     if (res.code === 200) {
@@ -102,12 +121,12 @@ const fetchData = async () => {
     console.log(err)
   })
 }
-
+// 高发案情
 const fetchData2 = async () => {
   return await highIncidenceCaseList({}).then((res: any) => {
     if (res.code === 200) {
       table2.value = res.rows.map((s: any) => {
-        return { name: s.caseReceiverName, content: s.caseContent, time: s.caseArlarmTime, typeName: checkType(s.caseCategoryCode) }
+        return { name: s.caseReceiverName, content: s.caseContent, time: s.caseArlarmTime, typeName: checkType2(s.caseCategoryCode) }
       })
     } else {
       Message.error(res.msg)
@@ -119,6 +138,7 @@ const fetchData2 = async () => {
 
 onMounted(async () => {
   await fetchDicData();
+  await fetchDicData2();
   fetchData();
   fetchData2();
 })

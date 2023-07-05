@@ -24,11 +24,22 @@ export function dic_Category(query?: any = {}) {
 }
 
 /**
- * @description 高发警情 - 高发类型
+ * @description 高发警情类型
  */
 export function dic_HighCategory(query?: any = {}) {
   return request({
     url: 'dashboard/dict/data/type/biz_high_incidence_instance_category',
+    method: 'GET',
+    data: query
+  })
+}
+
+/**
+ * @description 高发案件类型
+ */
+export function dic_HighCaseList(query?: any = {}) {
+  return request({
+    url: 'dashboard/dict/data/type/biz_high_incidence_case_category',
     method: 'GET',
     data: query
   })

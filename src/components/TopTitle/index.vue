@@ -1,9 +1,9 @@
 <template>
   <div class="top-title animate__animated animate__fadeInDown">
     <p class="title" @click="jumpTo">{{ title }}</p>
-    <p class="weather">
+    <!-- <p class="weather">
       <img src="../../assets/images/sun.png" alt="天气">
-    </p>
+    </p> -->
     <p class="time">
       {{ timer }}
     </p>
@@ -82,21 +82,20 @@ const jumpTo = () => {
     // -webkit-text-fill-color: transparent;
   }
 
-  .weather {
-    position: absolute;
-    left: 30px;
-    top: 36px;
-    user-select: none;
-  }
+  // .weather {
+  //   position: absolute;
+  //   left: 30px;
+  //   top: 36px;
+  //   user-select: none;
+  // }
 
   .time {
     position: absolute;
-    right: 300px;
-    top: 25px;
+    left: 260px;
+    top: 33px;
     cursor: pointer;
     user-select: none;
     font-size: 26px;
-
   }
 }
 </style>
