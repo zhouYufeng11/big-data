@@ -139,7 +139,7 @@ const initChart = () => {
 		grid: {
 			top: 15,
 			bottom: -20,
-			right: -10,
+			right: 10,
 			left: 10,
 			containLabel: true,
 		},
