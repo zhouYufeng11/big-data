@@ -2,9 +2,15 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router/index'
 import { Message } from '@arco-design/web-vue';
+import { createPinia } from 'pinia'
 
-const app = createApp(App);
+const pinia = createPinia();
 
+const app = createApp(App)
+
+// 状态管理
+app.use(pinia);
+// 路由
 app.use(router)
 
 Message._context = app._context;

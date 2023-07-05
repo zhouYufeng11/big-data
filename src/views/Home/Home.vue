@@ -36,6 +36,9 @@
         </Pannel>
       </div>
     </div>
+    <FramPage :showPage="showPage" :pageName="pageName" @closePop="closePop">
+      <ShowPage :pageContent="pageContent" />
+    </FramPage>
   </div>
 </template>
 
@@ -48,10 +51,34 @@ import ShowTable from '@/components/ShowTable/index.vue';
 import Line from '@/components/Echarts/Line/index.vue';
 import ShowLine from '@/components/Echarts/ShowLine/index.vue';
 import BarLine from '@/components/Echarts/BarLine/index.vue';
+import FramPage from '@/components/FramPage/index.vue';
+import ShowPage from '@/components/ShowPage/index.vue';
 import { highIncidenceInstanceList, highIncidenceCaseList } from '@/api/index';
 import { dic_HighCategory, dic_HighCaseList } from '@/api/dic';
 import { Message } from '@arco-design/web-vue';
+import { mainStore, watchStore } from "@/store/index"
+// 状态
+const store = mainStore()
+
 const title = '情指行融合实战平台';
+const showPage = ref(false);
+const pageName = ref('查看明细');
+const pageType: any = ref(null);
+const pageContent: any = ref({});
+
+// 监听 actions 方法
+watchStore("setPage", (store: any) => {
+  console.log(store.$state.showPage)
+  showPage.value = store.$state.showPage;
+  pageContent.value = store.$state.showContent;
+})
+
+
+const showBox = (item: any) => {
+  pageType.value = 1;
+  showPage.value = true;
+  pageContent.value = item;
+}
 
 const head1: any = ref([
   { text: '类型', width: 80, },
@@ -126,7 +153,7 @@ const fetchData2 = async () => {
   return await highIncidenceCaseList({}).then((res: any) => {
     if (res.code === 200) {
       table2.value = res.rows.map((s: any) => {
-        return { name: s.caseReceiverName, content: s.caseContent, time: s.caseArlarmTime, typeName: checkType2(s.caseCategoryCode) }
+        return { name: s.caseReceiverName, content: s.caseContent, time: s.caseArlarmTime, typeName: checkType2(s.highIncidenceCode) }
       })
     } else {
       Message.error(res.msg)

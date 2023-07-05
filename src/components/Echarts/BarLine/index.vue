@@ -14,10 +14,10 @@
 import * as echarts from 'echarts';
 import { EChartsOption, init } from 'echarts';
 import { onMounted, reactive, onBeforeUnmount, ref } from 'vue';
-import WarningTable from '@/components/WarningTable/index.vue';
 import { caseList, caseStatistics } from '@/api/index';
 import { dic_Category } from '@/api/dic';
 import { Message } from '@arco-design/web-vue';
+import WarningTable from '@/components/WarningTable/index.vue';
 
 const props = defineProps({
 	width: {

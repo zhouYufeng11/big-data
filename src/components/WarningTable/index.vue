@@ -18,7 +18,7 @@
 					<col v-for="(t, s) in head" :key="'head_col_body_' + s" :width="t.width" />
 				</colgroup>
 				<tbody>
-					<tr v-for="(v, k) in list" :key="'list_' + k">
+					<tr v-for="(v, k) in list" :key="'list_' + k" @click="showOne(v)">
 						<td>
 							<p class="type">{{ v.typeName }}</p>
 						</td>
@@ -34,7 +34,23 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed, watch } from 'vue';
+import { mainStore } from "@/store/index"
 
+// 状态
+const store = mainStore()
+// 关闭 dialog
+const closeDialog = () => {
+	store.setPage(false);
+	store.setContent({});
+}
+// 展示一个 dialog
+const showOne = (obj: any) => {
+	closeDialog();
+	setTimeout(() => {
+		store.setPage(true);
+		store.setContent(obj);
+	}, 100);
+}
 const props = defineProps({
 	head: {
 		type: Array<{ text: string, width: number }>,
@@ -106,9 +122,18 @@ watch(() => props.list, (newValue: any) => {
 			tr {
 				height: 40px;
 				line-height: 40px;
+				cursor: pointer;
 
 				&:nth-child(2n) {
 					background: rgba(52, 112, 214, 0.2);
+				}
+
+				&:hover {
+					background: rgba(52, 112, 214, 0.4);
+
+					td {
+						color: #00bbfa;
+					}
 				}
 			}
 		}

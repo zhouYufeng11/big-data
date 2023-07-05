@@ -30,8 +30,11 @@ const getSize = () => {
   resizeWidth();
 }
 const resizeWidth = () => {
+  // 第一种
   var ratio = screenParams.value.innerWidth / (root.value?.width || 2520);
-  root.value.style.transform = "scale(" + ratio + ")"
+  root.value.style.transform = "scale(" + ratio + ")";
+  // 第二种
+  // root.value.style.transform = `scaleY(${innerHeight / 1080}) scaleX(${innerWidth / 2520})`;
 }
 onBeforeMount(() => {
   window.onresize = () => {
