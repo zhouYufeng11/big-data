@@ -12,7 +12,7 @@
 				</thead>
 			</table>
 		</div>
-		<div class="table-box-body" :style="{ minHeight: height - 36 + 'px' }">
+		<div class="table-box-body" :style="{ minHeight: minHeight }">
 			<table align="center" vertical="center" border="0" cellspacing="0" cellpadding="0">
 				<colgroup>
 					<col v-for="(t, s) in head" :key="'head_col_body_' + height + s" :width="t.width" />
@@ -69,6 +69,8 @@ const props = defineProps({
 })
 
 const tableHeight = props.height - 20 + 'px';
+const minHeight = props.height - 36 + 'px';
+const bindHeight = `translateY(calc(-100% + ${minHeight}))`;
 
 const sliderSecond: any = ref('20s');
 
@@ -179,7 +181,7 @@ watch(() => props.list, (newValue: any) => {
 	}
 
 	to {
-		transform: translateY(-80%)
+		transform: v-bind(bindHeight);
 	}
 }
 </style>

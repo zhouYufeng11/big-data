@@ -36,7 +36,7 @@
         </Pannel>
       </div>
     </div>
-    <FramPage :showPage="showPage" :pageName="pageName" @closePop="closePop">
+    <FramPage :showPage="showPage" :pageName="pageName">
       <ShowPage :pageContent="pageContent" />
     </FramPage>
   </div>
@@ -72,13 +72,6 @@ watchStore("setPage", (store: any) => {
   showPage.value = store.$state.showPage;
   pageContent.value = store.$state.showContent;
 })
-
-
-const showBox = (item: any) => {
-  pageType.value = 1;
-  showPage.value = true;
-  pageContent.value = item;
-}
 
 const head1: any = ref([
   { text: '类型', width: 80, },

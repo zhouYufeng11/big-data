@@ -170,7 +170,7 @@ watch(() => props.list, (newValue: any) => {
 	}
 
 	to {
-		transform: translateY(-100%)
+		transform: translateY(calc(-100% + 164px))
 	}
 }
 </style>
