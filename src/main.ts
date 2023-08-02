@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import './main.css';
 import router from './router/index'
 import { Message } from '@arco-design/web-vue';
 import { createPinia } from 'pinia'

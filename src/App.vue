@@ -1,41 +1,85 @@
 <template>
-  <div class="root" ref="root">
-    <router-view :key="currentRoute" />
+  <div id="app">
+    <div class="root" ref="root">
+      <router-view :key="currentRoute" />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, onMounted, ref } from 'vue'
+import { computed, onBeforeMount, onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router';
 
 const currentRoute: any = ref(useRouter().currentRoute);
 
 const root = ref();
-const screenParams = ref({
-  innerWidth: innerWidth,
-  innerHeight: innerHeight,
-  screenWidth: window.screen.availWidth,
-  screenHeight: window.screen.availHeight,
-  devicePixelRatio: window.devicePixelRatio,
+
+const baseSize = ref({
+  width: screen.width,
+  height: screen.height,
+  devicePixelRatio: devicePixelRatio
 });
 
+const clientParams = ref({
+  innerHeight: innerHeight,
+  innerWidth: innerWidth
+});
+
+const scalePx = ref(1);
+
+const realWH = computed(() => {
+  return {
+    realWidth: baseSize.value.width * scalePx.value,
+    realHeight: baseSize.value.height * scalePx.value
+  }
+});
+
+const centerShow = () => {
+  //  计算剩余空间的大小
+  const widthSpace = clientParams.value.innerWidth - realWH.value.realWidth,
+        heightSpace = clientParams.value.innerHeight - realWH.value.realHeight;
+  
+  console.log(widthSpace)
+
+  root.value.style.left = widthSpace / 2 + 'px';
+  root.value.style.top = heightSpace / 2 + 'px';
+}
+
+const getBaseSize = () => {
+  baseSize.value = {
+    width: parseFloat(getComputedStyle(root.value, null)['width']),
+    height: parseFloat(getComputedStyle(root.value, null)['height']),
+    devicePixelRatio: window.devicePixelRatio
+  }
+}
+
 const getSize = () => {
-  screenParams.value = {
+  clientParams.value = {
     innerWidth: innerWidth,
-    innerHeight: innerHeight,
-    screenWidth: window.screen.availWidth,
-    screenHeight: window.screen.availHeight,
-    devicePixelRatio: window.devicePixelRatio,
+    innerHeight: innerHeight
   }
   resizeWidth();
 }
 const resizeWidth = () => {
-  // 第一种
-  // var ratio = screenParams.value.innerWidth / (root.value?.width || 2520);
-  // root.value.style.transform = "scale(" + ratio + ")";
-  // 第二种
-  root.value.style.transform = `scaleY(${innerHeight / 1080}) scaleX(${innerWidth / 2520})`;
+  // ui 设计稿   =>   宽 2520  高 1080
+  const { width, height } = baseSize.value;
+  const { innerHeight, innerWidth } = clientParams.value;
+  
+  if( (innerWidth / innerHeight) > ( width / height ) ) {
+    scalePx.value = innerHeight / height;
+    root.value.style.transform = `scale(${scalePx.value})`;
+    //  获取当前元素的缩放比例
+  } else if( (innerHeight / innerWidth) > ( height / width ) ) {
+    scalePx.value = innerWidth / width;
+    root.value.style.transform = `scale(${ scalePx.value })`;
+  } else {
+    scalePx.value = innerHeight / height;
+    root.value.style.transform = `scale(${scalePx.value})`;
+  }
+
+  centerShow();
 }
+
 onBeforeMount(() => {
   window.onresize = () => {
     getSize();
@@ -43,6 +87,7 @@ onBeforeMount(() => {
   //set tmp token when setting isNeedLogin false
 });
 onMounted(() => {
+  getBaseSize();
   getSize();
 });
 
@@ -65,6 +110,5 @@ onMounted(() => {
   background-size: 100%;
   transform-origin: 0 0 0;
   position: relative;
-  background: url('./assets/images/bg.png') center / cover no-repeat;
 }
 </style>
