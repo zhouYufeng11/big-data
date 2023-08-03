@@ -1,24 +1,13 @@
+import MainStore from './main';
+
 import { defineStore } from "pinia";
-import { nextt } from 'vue';
 
-export const mainStore = defineStore('main', {
-  state: () => {
-    return {
-      showPage: false, // 弹框
-      showContent: {}, // 弹框内容
+export const mainStore = defineStore('main', MainStore);
 
-    }
-  },
-  getters: {},
-  actions: {
-    setPage(bool: boolean) {
-      this.showPage = bool;
-    },
-    setContent(obj: any) {
-      this.showContent = obj;
-    }
-  },
-});
+
+
+
+
 
 /**
  * 公共方法 - 监听 actions 方法
@@ -26,7 +15,8 @@ export const mainStore = defineStore('main', {
  * @param callback 回调函数
  */
 export const watchStore = (actionFnName: string, callback: object) => {
-  const store = mainStore()
+  const store = mainStore();
+
   store.$onAction(({
     name, // action 的名字
     store, // store 实例

@@ -10,86 +10,73 @@
 import { computed, onBeforeMount, onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router';
 
+import { uiWidth, uiHeight, baseSize } from './config/app'
+import {clientSize, setClientSize } from './hooks'
+
 const currentRoute: any = ref(useRouter().currentRoute);
 
-const root = ref();
+  const root = ref();
+  const scaleRatio = ref(1);
 
-const baseSize = ref({
-  width: screen.width,
-  height: screen.height,
-  devicePixelRatio: devicePixelRatio
-});
-
-const clientParams = ref({
-  innerHeight: innerHeight,
-  innerWidth: innerWidth
-});
-
-const scalePx = ref(1);
-
-const realWH = computed(() => {
-  return {
-    realWidth: baseSize.value.width * scalePx.value,
-    realHeight: baseSize.value.height * scalePx.value
-  }
-});
-
-const centerShow = () => {
-  //  计算剩余空间的大小
-  const widthSpace = clientParams.value.innerWidth - realWH.value.realWidth,
-        heightSpace = clientParams.value.innerHeight - realWH.value.realHeight;
-  
-  console.log(widthSpace)
-
-  root.value.style.left = widthSpace / 2 + 'px';
-  root.value.style.top = heightSpace / 2 + 'px';
-}
-
-const getBaseSize = () => {
-  baseSize.value = {
-    width: parseFloat(getComputedStyle(root.value, null)['width']),
-    height: parseFloat(getComputedStyle(root.value, null)['height']),
-    devicePixelRatio: window.devicePixelRatio
-  }
-}
-
-const getSize = () => {
-  clientParams.value = {
-    innerWidth: innerWidth,
-    innerHeight: innerHeight
-  }
-  resizeWidth();
-}
-const resizeWidth = () => {
-  // ui 设计稿   =>   宽 2520  高 1080
-  const { width, height } = baseSize.value;
-  const { innerHeight, innerWidth } = clientParams.value;
-  
-  if( (innerWidth / innerHeight) > ( width / height ) ) {
-    scalePx.value = innerHeight / height;
-    root.value.style.transform = `scale(${scalePx.value})`;
-    //  获取当前元素的缩放比例
-  } else if( (innerHeight / innerWidth) > ( height / width ) ) {
-    scalePx.value = innerWidth / width;
-    root.value.style.transform = `scale(${ scalePx.value })`;
-  } else {
-    scalePx.value = innerHeight / height;
-    root.value.style.transform = `scale(${scalePx.value})`;
+  //  设置 root 的宽高
+  const setRootWH = () => {
+    root.value.style.display = 'none';
+    root.value.style.width = baseSize.width + 'px';
+    root.value.style.height = baseSize.height + 'px';
+    root.value.style.display = '';
   }
 
-  centerShow();
-}
+  const ratioRoot = function() {
+    const { innerHeight, innerWidth } = clientSize;
+    const { width, height } = baseSize;
+
+    if( (innerWidth / innerHeight) > ( width / height ) ) { //  宽度较大，以高度为基准
+      scaleRatio.value = innerHeight / height;
+    } else if( (innerHeight / innerWidth) > ( height / width )  ) {
+      scaleRatio.value = innerWidth / width;
+    } else {
+      scaleRatio.value = innerWidth / width;
+    }
+
+    root.value.style.transform = `scale(${ scaleRatio.value })`;
+
+    centerShow();
+  }
+
+  //  居中显示
+  const centerShow = () => {
+    //  计算 盒子真实的宽高
+    const { width, height } = baseSize;
+    const { innerWidth, innerHeight } = clientSize;
+
+    const sealWidth = width * scaleRatio.value,
+          sealHeight = height * scaleRatio.value,
+          left = (innerWidth - sealWidth) / 2,
+          top = (innerHeight - sealHeight) / 2;
+    
+    console.log(top);
+    root.value.style.display = 'none';
+    root.value.style.left =  left + 'px';
+    root.value.style.top = top + 'px';
+    root.value.style.display = '';
+  }
+//  屏幕尺寸数据
 
 onBeforeMount(() => {
-  window.onresize = () => {
-    getSize();
-  }
-  //set tmp token when setting isNeedLogin false
-});
+  window.addEventListener('resize', function(ev) {
+    ev.preventDefault();
+    setClientSize();
+    ratioRoot();
+  }, false)
+})
+
 onMounted(() => {
-  getBaseSize();
-  getSize();
-});
+  setRootWH();
+  setClientSize();
+  ratioRoot();
+})
+
+
 
 </script> 
 <style lang="scss">
@@ -105,10 +92,10 @@ onMounted(() => {
 }
 
 .root {
-  width: 2520px;
-  height: 1080px;
-  background-size: 100%;
   transform-origin: 0 0 0;
+  background-size: 100%;
+  background: url('./assets/images/bg.png') center / cover no-repeat;
   position: relative;
+  box-sizing: border-box;
 }
 </style>
