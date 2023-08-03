@@ -74,6 +74,8 @@ onMounted(() => {
   setRootWH();
   setClientSize();
   ratioRoot();
+  
+  window.scroll(0, 0);  //  定位
 })
 
 

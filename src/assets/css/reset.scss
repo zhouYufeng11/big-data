@@ -8,6 +8,7 @@
 html {
   // background: linear-gradient(to right, #001C41 5%, #001135 15%, #030E2C 25%, #020106 70%);
   background-color: #001135;
+  overflow: hidden;
 }
 
 body {
@@ -47,6 +48,7 @@ label {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #fff;
+  overflow: hidden;
 }
 
 ul li {

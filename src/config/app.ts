@@ -1,6 +1,6 @@
 
 const uiWidth = 2520,
-      uiHeight = 1080;
+      uiHeight = 950;
 
 const uiRatio = uiHeight / uiWidth;
 
@@ -11,7 +11,6 @@ const baseSize = {
     width: screen.availWidth * dpr,
     height: screen.availWidth * uiRatio * dpr
 };
-
 
 export {
     uiWidth,
